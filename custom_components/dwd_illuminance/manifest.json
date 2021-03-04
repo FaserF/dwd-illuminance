@@ -1,11 +1,9 @@
 {
   "domain": "dwd_illuminance",
   "name": "DWD Illuminance",
-  "version": "2021.03.0",
   "documentation": "https://github.com/faserf/dwd-illuminance/",
-  "requirements": [],
-  "dependencies": [],
-  "codeowners": [
-    "@pnbruckner", "@faserf"
-  ]
+  "issue_tracker": "https://github.com/faserf/dwd-illuminance/issues",
+  "dependencies": ["dwd_weather"],
+  "codeowners": ["@balloob"],
+  "requirements": ["@pnbruckner", "@faserf"],
 }

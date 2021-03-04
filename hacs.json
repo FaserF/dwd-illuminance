@@ -1,0 +1,8 @@
+{
+    "name": "DWD Illuminance Sensor",
+    "domains": [
+        "sensor"
+    ],
+    "iot_class": "Local Polling",
+    "render_readme": false
+}
