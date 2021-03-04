@@ -35,15 +35,15 @@ Or add this github repository to HACS to install it via HACS.
 >__NOTE__: Do not download the file by using the link above directly. Rather, click on it, then on the page that comes up use the `Raw` button.
 
 ## Configuration variables
-- **entity_id**: Entity ID of entity that indicates current weather conditions. See examples below. Required when not using WU.
+- **entity_id**: Entity ID of entity that indicates current weather conditions. See examples below.
 - **name** (*Optional*): Name of the sensor. Default is `DWD Illuminance`.
-- **scan_interval** (*Optional*): Polling interval.  For non-WU configs only applies during ramp up period around sunrise and ramp down period around sunset. Minimum is 5 minutes. Default is 5 minutes.
+- **scan_interval** (*Optional*): Polling interval. Only applies during ramp up period around sunrise and ramp down period around sunset. Minimum is 5 minutes. Default is 5 minutes.
 ## Examples
 
 ### Deutscher Wetterdienst
 ```
 sensor:
-  - platform: illuminance
+  - platform: dwd_illuminance
     name: DeutscherWetterDienst Illuminance
     entity_id: weather.dwd_weather_home
 ```
