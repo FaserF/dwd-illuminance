@@ -14,28 +14,6 @@ import voluptuous as vol
 from homeassistant.components.sensor import (
     DOMAIN as SENSOR_DOMAIN, PLATFORM_SCHEMA)
 try:
-    from homeassistant.components.darksky.sensor import (
-        ATTRIBUTION as DSS_ATTRIBUTION)
-except:
-    DSS_ATTRIBUTION = "no_dss"
-try:
-    from homeassistant.components.yr.sensor import ATTRIBUTION as YRS_ATTRIBUTION
-except:
-    YRS_ATTRIBUTION = "no_yrs"
-try:
-    from homeassistant.components.darksky.weather import (
-        ATTRIBUTION as DSW_ATTRIBUTION, MAP_CONDITION as DSW_MAP_CONDITION)
-except:
-    DSW_ATTRIBUTION = "no_dsw"
-try:
-    from homeassistant.components.met.weather import ATTRIBUTION as MET_ATTRIBUTION
-except:
-    MET_ATTRIBUTION = "no_met"
-try:
-    from homeassistant.components.accuweather.weather import ATTRIBUTION as AW_ATTRIBUTION
-except:
-    AW_ATTRIBUTION = "no_aw"
-try:
     from custom_components.dwd_weather.weather import ATTRIBUTION as DWD_ATTRIBUTION
 except:
     DWD_ATTRIBUTION = "no_dwd"
@@ -54,48 +32,6 @@ DEFAULT_NAME = 'DWD Illuminance'
 MIN_SCAN_INTERVAL = dt.timedelta(minutes=5)
 DEFAULT_SCAN_INTERVAL = dt.timedelta(minutes=5)
 
-WU_MAPPING = (
-    (200, ('tstorms',)),
-    (1000, ('cloudy', 'fog', 'rain', 'sleet', 'snow', 'flurries',
-            'chanceflurries', 'chancerain', 'chancesleet',
-            'chancesnow', 'chancetstorms')),
-    (2500, ('mostlycloudy',)),
-    (7500, ('partlysunny', 'partlycloudy', 'mostlysunny', 'hazy')),
-    (10000, ('sunny', 'clear')))
-YR_MAPPING = (
-    (200, (6, 11, 14, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32,
-           33, 34)),
-    (1000, (5, 7, 8, 9, 10, 12, 13, 15, 40, 41, 42, 43, 44, 45, 46, 47, 48,
-            49, 50)),
-    (2500, (4, )),
-    (7500, (2, 3)),
-    (10000, (1, )))
-DARKSKY_MAPPING = (
-    (200, ('hail', 'lightning')),
-    (1000, ('fog', 'rainy', 'snowy', 'snowy-rainy')),
-    (2500, ('cloudy', )),
-    (7500, ('partlycloudy', )),
-    (10000, ('clear-night', 'sunny', 'windy')))
-MET_MAPPING = (
-    (200, ('lightning-rainy', 'pouring')),
-    (1000, ('fog', 'rainy', 'snowy', 'snowy-rainy')),
-    (2500, ('cloudy', )),
-    (7500, ('partlycloudy', )),
-    (10000, ('clear-night', 'sunny')),
-)
-AW_MAPPING = (
-    (200, ('lightning', 'lightning-rainy', 'pouring')),
-    (1000, ('cloudy', 'fog', 'rainy', 'snowy', 'snowy-rainy', 'hail', 'exceptional', 'windy')),
-    (2500, ('mostlycloudy', )),
-    (7500, ('partlycloudy', )),
-    (10000, ('sunny', 'clear-night')),
-)
-ECOBEE_MAPPING = (
-    (200, ('pouring', 'snowy-heavy', 'lightning-rainy')),
-    (1000, ('cloudy', 'fog', 'rainy', 'snowy', 'snowy-rainy', 'hail', 'windy', 'tornado')),
-    (7500, ('partlycloudy', 'hazy')),
-    (10000, ('sunny', )),
-)
 DWD_MAPPING = (
     (200, ('lightning', 'lightning-rainy', 'pouring')),
     (1000, ('cloudy', 'fog', 'rainy', 'snowy', 'snowy-rainy', 'windy')),
@@ -278,7 +214,7 @@ class IlluminanceSensor(Entity):
 
             raw_conditions = resp['current_observation']['icon']
             conditions = self._conditions = raw_conditions
-            mapping = WU_MAPPING
+            mapping = DWD_MAPPING
         else:
             state = self.hass.states.get(self._entity_id)
             if state is None:
@@ -295,36 +231,12 @@ class IlluminanceSensor(Entity):
                                   ATTR_ATTRIBUTION, self._entity_id)
                 return
             raw_conditions = state.state
-            if attribution in (DSS_ATTRIBUTION, DSW_ATTRIBUTION):
-                if state.domain == SENSOR_DOMAIN:
-                    conditions = DSW_MAP_CONDITION.get(raw_conditions)
-                else:
-                    conditions = raw_conditions
-                mapping = DARKSKY_MAPPING
-            elif attribution == YRS_ATTRIBUTION:
-                try:
-                    conditions = int(raw_conditions)
-                except (TypeError, ValueError):
-                    if self._init_complete:
-                        _LOGGER.error('State of YR sensor not a number: %s',
-                                      self._entity_id)
-                    return
-                mapping = YR_MAPPING
-            elif attribution == MET_ATTRIBUTION:
-                conditions = raw_conditions
-                mapping = MET_MAPPING
-            elif attribution == AW_ATTRIBUTION:
-                conditions = raw_conditions
-                mapping = AW_MAPPING
-            elif 'Ecobee' in attribution:
-                conditions = raw_conditions
-                mapping = ECOBEE_MAPPING
-            elif attribution == DWD_ATTRIBUTION:
+            if attribution == DWD_ATTRIBUTION:
                 conditions = raw_conditions
                 mapping = DWD_MAPPING
             else:
                 if self._init_complete:
-                    _LOGGER.error('Unsupported sensor: %s', self._entity_id)
+                    _LOGGER.error('Only DWD is supported! Unsupported sensor: %s', self._entity_id)
                 return
 
         illuminance = 0
