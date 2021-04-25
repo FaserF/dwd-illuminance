@@ -4,5 +4,5 @@
         "sensor"
     ],
     "iot_class": "Local Polling",
-    "render_readme": false
+    "render_readme": true
 }
