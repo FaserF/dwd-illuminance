@@ -19,7 +19,7 @@ Then add the desired configuration. Here is an example of a typical configuratio
 ```yaml
 sensor:
   - platform: dwd_illuminance
-    entity_id: weather.home
+    entity_id: weather.dwd_weather_home
 ```
 ## Installation
 Place a copy of:
@@ -46,5 +46,6 @@ Or add this github repository to HACS to install it via HACS.
 sensor:
   - platform: dwd_illuminance
     name: DeutscherWetterDienst Illuminance
+    mode: normal
     entity_id: weather.dwd_weather_home
 ```
