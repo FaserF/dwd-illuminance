@@ -3,8 +3,13 @@
   "name": "Deutscher-Wetter-Dienst Illuminance",
   "documentation": "https://github.com/faserf/dwd-illuminance/",
   "issue_tracker": "https://github.com/faserf/dwd-illuminance/issues",
-  "dependencies": ["dwd_weather"],
-  "codeowners": ["@pnbruckner", "@faserf"],
-  "version": "1.0.1",
+  "dependencies": [
+    "dwd_weather"
+  ],
+  "codeowners": [
+    "@faserf",
+    "@pnbruckner"
+  ],
+  "version": "2022.09.0",
   "iot_class": "local_polling"
 }

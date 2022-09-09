@@ -9,7 +9,7 @@ Estimates outdoor illuminance based on current weather conditions and time of da
 The following sources of weather data are supported:
 * [Deutscher Wetterdienst](https://github.com/FL550/dwd_weather)
 
-This Integration is based on https://github.com/pnbruckner/ha-illuminance and only a fork to support DWD (Deutscher Wetter Dienst). If you are using another weather provider, please be sure to use the integration from pnbrucker instead of this one. I will only support DWD, as pnbrucker wont merge my DWD Commits (https://github.com/pnbruckner/ha-illuminance/pull/17). 
+This Integration is based on https://github.com/pnbruckner/ha-illuminance and only a fork to support DWD (Deutscher Wetter Dienst). If you are using another weather provider, please be sure to use the integration from pnbrucker instead of this one. I will only support DWD, as pnbrucker wont merge my DWD Commits (https://github.com/pnbruckner/ha-illuminance/pull/17).
 
 You can also have my integration and pnbrucker's integration installed at the same time, as this integration was renamed.
 
@@ -24,18 +24,19 @@ sensor:
 ## Installation
 Place a copy of:
 
-[`__init__.py`](custom_components/dwd_illuminance/__init__.py) at `<config>/custom_components/dwd_illuminance/__init__.py`  
-[`sensor.py`](custom_components/dwd_illuminance/sensor.py) at `<config>/custom_components/dwd_illuminance/sensor.py`  
+[`__init__.py`](custom_components/dwd_illuminance/__init__.py) at `<config>/custom_components/dwd_illuminance/__init__.py`
+[`sensor.py`](custom_components/dwd_illuminance/sensor.py) at `<config>/custom_components/dwd_illuminance/sensor.py`
 [`manifest.json`](custom_components/dwd_illuminance/manifest.json) at `<config>/custom_components/dwd_illuminance/manifest.json`
 
 where `<config>` is your Home Assistant configuration directory.
 
-Or add this github repository to HACS to install it via HACS. 
+Or add this github repository to HACS to install it via HACS.
 
 >__NOTE__: Do not download the file by using the link above directly. Rather, click on it, then on the page that comes up use the `Raw` button.
 
 ## Configuration variables
 - **entity_id**: Entity ID of entity that indicates current weather conditions. See examples below.
+- **mode** (*Optional*): Mode of operation. Choices are `normal` (default) which uses sun elevation, and `simple` which uses time of day.
 - **name** (*Optional*): Name of the sensor. Default is `DWD Illuminance`.
 - **scan_interval** (*Optional*): Polling interval. Only applies during ramp up period around sunrise and ramp down period around sunset. Minimum is 5 minutes. Default is 5 minutes.
 ## Examples
