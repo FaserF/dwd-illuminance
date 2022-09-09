@@ -27,11 +27,10 @@ from homeassistant.const import (
     LIGHT_LUX,
 )
 from homeassistant.core import callback
-from homeassistant.helpers.aiohttp_client import async_get_clientsession
 import homeassistant.helpers.config_validation as cv
 from homeassistant.helpers.entity import Entity
-from homeassistant.helpers.event import async_track_state_change
-from homeassistant.helpers.sun import get_astral_event_date
+from homeassistant.helpers.event import async_track_state_change_event
+from homeassistant.helpers.sun import get_astral_location
 import homeassistant.util.dt as dt_util
 
 DEFAULT_NAME = 'DWD Illuminance'
