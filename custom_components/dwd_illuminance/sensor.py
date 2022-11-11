@@ -38,12 +38,11 @@ MIN_SCAN_INTERVAL = dt.timedelta(minutes=5)
 DEFAULT_SCAN_INTERVAL = dt.timedelta(minutes=5)
 
 DWD_MAPPING = (
-    (200, ('lightning', 'lightning-rainy', 'pouring')),
-    (1000, ('cloudy', 'fog', 'rainy', 'snowy', 'snowy-rainy', 'windy')),
-    (2500, ('mostlycloudy', )),
-    (3000, ('unknown', )), #DWD sometimes gets an unknown state if fetching is too slow. So we will handle it with 3000
-    (7500, ('partlycloudy', )),
-    (10000, ('sunny', 'clear-night')),
+    (10, ('lightning', 'lightning-rainy', 'pouring')),
+    (5, ('cloudy', 'fog', 'rainy', 'snowy', 'snowy-rainy', 'windy')),
+    (3, ('mostlycloudy', )),
+    (2, ('partlycloudy', )),
+    (1, ('sunny', 'clear-night')),
 )
 
 _LOGGER = logging.getLogger(__name__)

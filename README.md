@@ -35,6 +35,12 @@ Or add this github repository to HACS to install it via HACS.
 >__NOTE__: Do not download the file by using the link above directly. Rather, click on it, then on the page that comes up use the `Raw` button.
 
 ## Configuration variables
+
+### Modes of operation
+Two modes are available: normal & simple. The desired mode is selected via the [configuration](#configuration-variables).
+
+More details can be found [here](https://github.com/pnbruckner/ha-illuminance/blob/master/README.md#modes-of-operation)
+
 - **entity_id**: Entity ID of entity that indicates current weather conditions. See examples below.
 - **mode** (*Optional*): Mode of operation. Choices are `normal` (default) which uses sun elevation, and `simple` which uses time of day.
 - **name** (*Optional*): Name of the sensor. Default is `DWD Illuminance`.
