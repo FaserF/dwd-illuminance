@@ -11,5 +11,6 @@
     "@pnbruckner"
   ],
   "version": "2022.09.0",
-  "iot_class": "local_polling"
+  "iot_class": "local_polling",
+  "config_flow": true
 }
