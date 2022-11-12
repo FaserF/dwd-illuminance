@@ -1,0 +1,22 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "description": "Generate Illuminance by algorythm based on DWD weather data",
+        "data": {
+          "weather": "Weather Provider name",
+          "mode": "Algorythm mode",
+          "scan_interval": "Scan interval in minutes"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Cannot connect",
+      "invalid_lat_long": "Invalid data",
+      "unknown": "Unknown Error"
+    },
+    "abort": {
+      "already_configured": "This weather illuminance combination is already configured!"
+    }
+  }
+}

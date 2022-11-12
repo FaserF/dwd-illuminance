@@ -1,5 +1,5 @@
 """
-Illuminance Sensor.
+Illuminance Sensor. 
 
 A Sensor platform that estimates outdoor illuminance from current weather conditions.
 """
@@ -20,11 +20,15 @@ except:
 from homeassistant.const import (
     ATTR_ATTRIBUTION,
     CONF_ENTITY_ID,
+    EVENT_CORE_CONFIG_UPDATE,
+    LIGHT_LUX,
+)
+from .const import (
     CONF_MODE,
     CONF_NAME,
     CONF_SCAN_INTERVAL,
-    EVENT_CORE_CONFIG_UPDATE,
-    LIGHT_LUX,
+
+    DOMAIN,
 )
 from homeassistant.core import callback
 import homeassistant.helpers.config_validation as cv
@@ -51,24 +55,14 @@ MODE_NORMAL = "normal"
 MODE_SIMPLE = "simple"
 MODES = (MODE_NORMAL, MODE_SIMPLE)
 
-PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend(
-    {
-        vol.Optional(CONF_NAME, default=DEFAULT_NAME): cv.string,
-        vol.Optional(CONF_SCAN_INTERVAL, default=DEFAULT_SCAN_INTERVAL): vol.All(
-            cv.time_period, vol.Range(min=MIN_SCAN_INTERVAL)
-        ),
-        vol.Required(CONF_ENTITY_ID): cv.entity_id,
-        vol.Optional(CONF_MODE, default=MODE_NORMAL): vol.In(MODES),
-    }
-)
-
 _20_MIN = dt.timedelta(minutes=20)
 _40_MIN = dt.timedelta(minutes=40)
 
-
-async def async_setup_platform(hass, config, async_add_entities, discovery_info=None):
-    """Set up platform."""
-
+async def async_setup_entry(
+    hass, entry, async_add_entities, discovery_info=None
+):
+    """Setup sensors from a config entry created in the integrations UI."""
+    config = hass.data[DOMAIN][entry.entry_id]
     def get_loc_elev(event=None):
         """Get HA Location object & elevation."""
         try:
@@ -81,8 +75,17 @@ async def async_setup_platform(hass, config, async_add_entities, discovery_info=
     if "illuminance" not in hass.data:
         get_loc_elev()
         hass.bus.async_listen(EVENT_CORE_CONFIG_UPDATE, get_loc_elev)
-
-    async_add_entities([IlluminanceSensor(config)], True)
+    _LOGGER.debug("Sensor async_setup_entry")
+    if entry.options:
+        config.update(entry.options)
+    sensors = IlluminanceSensor(config, entry)
+    async_add_entities(sensors, update_before_add=True)
+    async_add_entities(
+        [
+            IlluminanceSensor(config, entry)
+        ],
+        update_before_add=True
+    )
 
 
 def _illumiance(elev):
@@ -101,10 +104,10 @@ def _illumiance(elev):
 class IlluminanceSensor(Entity):
     """Illuminance sensor."""
 
-    def __init__(self, config):
+    def __init__(self, config, entry):
         """Initialize."""
-        self._entity_id = config[CONF_ENTITY_ID]
-        self._name = config[CONF_NAME]
+        self._entity_id = entry.entry_id
+        self._name = f"DWD illuminance {entry.entry_id}"#config[CONF_NAME]
         self._mode = config[CONF_MODE]
         if self._mode == MODE_SIMPLE:
             self._sun_data = None
@@ -117,10 +120,10 @@ class IlluminanceSensor(Entity):
         """Run when entity about to be added to hass."""
 
         def get_mappings(state):
-            if not state:
-                if self.hass.is_running:
-                    _LOGGER.error("%s: State not found: %s", self.name, self._entity_id)
-                return False
+            #if not state:
+            #    if self.hass.is_running:
+            #        _LOGGER.error("%s: State not found: %s", self.name, self._entity_id)
+            #    return False
             attribution = state.attributes.get(ATTR_ATTRIBUTION)
             if not attribution:
                 _LOGGER.error(
